@@ -1,0 +1,31 @@
+{
+  "name": "smartcampus-api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node bin/www",
+    "dev": "node node_modules/nodemon/bin/nodemon bin/www",
+    "test": "node node_modules/mocha/bin/mocha --exit --timeout=50000",
+    "coverage": "node node_modules/nyc/bin/nyc --reporter=html --reporter=text node_modules/mocha/bin/mocha --exit --timeout=50000",
+    "schema": "node utils/install_schema"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "cors": "~2.8.4",
+    "debug": "~2.6.9",
+    "express": "^4.16.3",
+    "express-jwt": "~5.3.1",
+    "express-session": "~1.15.6",
+    "google-auth-library": "^2.0.0",
+    "morgan": "~1.9.0",
+    "neode": "^0.2.10"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "faker": "^4.1.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.4",
+    "nyc": "^13.0.1",
+    "supertest": "^3.3.0"
+  }
+}

@@ -1,0 +1,21 @@
+image: node:8
+
+# Cache modules in between jobs
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+  - node_modules/
+
+before_script:
+  - npm install
+
+# Build app, run tests with coverage reporting (gitlab will regex parse)
+Test:
+  stage: test
+  script:
+    - npm run build
+    - npm test -- --coverage
+  artifacts:
+    paths:
+      - build/
+      - coverage/
