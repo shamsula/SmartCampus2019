@@ -1,13 +1,79 @@
-# smartcampus-api
+**Prerequisites**: Git (see [here](https://www.atlassian.com/git/tutorials/install-git) for help installing)
 
-[![pipeline status](https://gitlab.cs.uwindsor.ca/smart-campus/smartcampus-api/badges/master/pipeline.svg)](https://gitlab.cs.uwindsor.ca/smart-campus/smartcampus-api/commits/master)
-[![coverage report](https://gitlab.cs.uwindsor.ca/smart-campus/smartcampus-api/badges/master/coverage.svg)](https://gitlab.cs.uwindsor.ca/smart-campus/smartcampus-api/commits/master)
+**Optional**: See ["Gitlab and SSH keys"](https://docs.gitlab.com/ee/ssh/) to set up authenticating to github via SSH instead of username/password.
 
-A RestAPI server for uWindsor's SmartCampus event social network, built with NodeJS/Express.
+Use your terminal or [Git Bash](https://gitforwindows.org/)(Windows) for running the commands in the wiki.
 
-See [the wiki](https://gitlab.cs.uwindsor.ca/smart-campus/smartcampus-api/wikis) for Developer information.
+See [Git Feature Branch Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow) for a guide on how to make changes and submit them.
 
-See the following for framework information:
-* [NodeJS documentation](https://nodejs.org/dist/latest-v8.x/docs/api/)
-* [Express API](https://expressjs.com/en/api.html)
-* [Sequelize ORM documentation](http://docs.sequelizejs.com/)
+## 1. Install NodeJS
+* MacOS/Linux: Recommended to use NVM (node version manager). Download and run install script:
+```
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+```
+Restart terminal, then install node and set to use LTS version by default:
+```
+nvm install --lts
+nvm use --lts
+nvm alias default lts/*
+```
+
+* Windows: Download [NodeJS](https://nodejs.org/en/download/) and install.
+
+***
+
+Verify that you have node and npm (node package manager):
+```
+$ node -v
+v8.11.1
+$ npm -v
+5.6.0
+```
+
+## 2. Clone project
+```
+git clone https://gitlab.cs.uwindsor.ca/smart-campus/smartcampus-web.git
+cd smartcampus-web
+```
+
+> During the remote git clone, you might receive the following error:
+> ```
+> fatal: unable to access 'https://gitlab.cs.uwindsor.ca/smart-campus/smartcampus-web.git/': SSL certificate problem: unable to get local issuer certificate
+> ```
+> If you are using Windows, you can use Windows Certificate Store (schannel) instead of SSL to authenticate by running the following:
+> ```
+> git config --global http.sslBackend schannel
+> ```
+> Another option is to disable ssl altogether (not recommended)
+> ```
+> git config --global http.sslVerify false
+> ```
+
+## 3. Create a Google+ API OAuth Client ID
+
+1. See [this guide](https://chimpgroup.com/knowledgebase/google-plus-api-keys/) on creating a client id. We need `user.profile` and `user.email` permissions. 
+1. You will need to add the app to the authorized engine and redirects: `localhost:3000`
+1. Place the obtained google client ID in `.env.local` (You might need to create if non-existent)
+
+You can [use the same client id](https://gitlab.cs.uwindsor.ca/smart-campus/smartcampus-api/wikis/Developer-Setup#4-create-a-google-api-oauth-client-id) for `smartcampus-api`
+
+## 4. Install dependencies
+```
+npm install
+```
+
+You can run `CI=true npm test` after to verify everything works.
+
+## 5. Start development server
+```
+npm start
+```
+Use `ctrl-c` to stop. 
+
+Visit [http://localhost:3000](http://localhost:3000) to see development build. The server automatically restarts when files change.
+
+## 6. Start the back-end server
+
+Setup [smartcampus-api](https://gitlab.cs.uwindsor.ca/smart-campus/smartcampus-api) and [start the dev server](https://gitlab.cs.uwindsor.ca/smart-campus/smartcampus-api/wikis/Developer-Setup#6-start-development-server).
+
+`.env` holds the URL of the back-end api, which is defaulted to port 3001 (`smartcampus-api` dev server). If you want to use something different, create an `.env.local` file to override.
