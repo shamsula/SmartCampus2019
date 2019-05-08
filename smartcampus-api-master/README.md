@@ -77,3 +77,42 @@ Visit [http://localhost:3000](http://localhost:3000) to see development build. T
 Setup [smartcampus-api](https://gitlab.cs.uwindsor.ca/smart-campus/smartcampus-api) and [start the dev server](https://gitlab.cs.uwindsor.ca/smart-campus/smartcampus-api/wikis/Developer-Setup#6-start-development-server).
 
 `.env` holds the URL of the back-end api, which is defaulted to port 3001 (`smartcampus-api` dev server). If you want to use something different, create an `.env.local` file to override.
+
+
+We serve the built react app on Windows Server 2012, just like an ordinary php app, with the following changes:
+
+Create `.env.production`:
+```
+# URL of smartcampus-api
+REACT_APP_API_URL=https://smartcampus.cs.uwindsor.ca
+
+# Google+ API OAuth ClientID. (https://console.cloud.google.com/apis)
+REACT_APP_GOOGLE_CLIENT_ID=CHANGEME
+```
+Run `npm run build` to generate the production build.
+
+Go to build/ directory, and add the following `web.config` file (needed for routing pages):
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<system.webServer>
+		<rewrite>
+			<rules>
+				<rule name="ReactRouter Routes" stopProcessing="true">
+					<match url=".*" />
+					<conditions logicalGrouping="MatchAll">
+						<add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+						<add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+						<add input="{REQUEST_URI}" pattern="^/(api)" negate="true" />
+					</conditions>
+					<action type="Rewrite" url="index.html" />
+				</rule>
+			</rules>
+		</rewrite>
+	</system.webServer>
+</configuration>
+```
+
+Then add `<base href='https://smartcampus.cs.uwindsor.ca'/>` to `build/index.html` in the `<head>` section
+
